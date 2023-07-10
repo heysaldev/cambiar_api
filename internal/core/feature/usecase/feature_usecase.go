@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"context"
+
 	"github.com/cambiar_api/internal/core/feature/model"
 	"github.com/cambiar_api/internal/core/feature/repository/port"
 	"github.com/cambiar_api/internal/entity"
@@ -11,13 +13,16 @@ type FeatureUsecase struct {
 }
 
 type IFeatureUsecase interface {
-	GetAllWithQuery(spec model.GetAllWithQuerySpec) []entity.Feature
+	GetAllWithQuery(ctx context.Context, spec model.GetAllWithQuerySpec) []entity.Feature
 }
 
-func NewFeatureUsecase(dependencies FeatureUsecase) IFeatureUsecase {
-	return &dependencies
+func NewFeatureUsecase(repo port.IFeatureRepository) IFeatureUsecase {
+	return &FeatureUsecase{
+		Repo: repo,
+	}
 }
 
-func (a *FeatureUsecase) GetAllWithQuery(spec model.GetAllWithQuerySpec) []entity.Feature {
-	return []entity.Feature{}
+func (a *FeatureUsecase) GetAllWithQuery(ctx context.Context, spec model.GetAllWithQuerySpec) []entity.Feature {
+	response := a.Repo.GetAllWithQuery(ctx, spec)
+	return response
 }

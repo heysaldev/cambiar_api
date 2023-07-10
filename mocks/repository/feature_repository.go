@@ -5,8 +5,10 @@
 package mock_port
 
 import (
+        context "context"
         reflect "reflect"
 
+        model "github.com/cambiar_api/internal/core/feature/model"
         entity "github.com/cambiar_api/internal/entity"
         gomock "github.com/golang/mock/gomock"
 )
@@ -35,15 +37,15 @@ func (m *MockIFeatureRepository) EXPECT() *MockIFeatureRepositoryMockRecorder {
 }
 
 // GetAllWithQuery mocks base method.
-func (m *MockIFeatureRepository) GetAllWithQuery() []entity.Feature {
+func (m *MockIFeatureRepository) GetAllWithQuery(ctx context.Context, spec model.GetAllWithQuerySpec) []entity.Feature {
         m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "GetAllWithQuery")
+        ret := m.ctrl.Call(m, "GetAllWithQuery", ctx, spec)
         ret0, _ := ret[0].([]entity.Feature)
         return ret0
 }
 
 // GetAllWithQuery indicates an expected call of GetAllWithQuery.
-func (mr *MockIFeatureRepositoryMockRecorder) GetAllWithQuery() *gomock.Call {
+func (mr *MockIFeatureRepositoryMockRecorder) GetAllWithQuery(ctx, spec interface{}) *gomock.Call {
         mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllWithQuery", reflect.TypeOf((*MockIFeatureRepository)(nil).GetAllWithQuery))
+        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllWithQuery", reflect.TypeOf((*MockIFeatureRepository)(nil).GetAllWithQuery), ctx, spec)
 }
