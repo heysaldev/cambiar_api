@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/cambiar_api/internal/core/feature/model"
 	"github.com/cambiar_api/internal/core/feature/repository/port"
@@ -13,7 +14,7 @@ type FeatureUsecase struct {
 }
 
 type IFeatureUsecase interface {
-	GetAllWithQuery(ctx context.Context, spec model.GetAllWithQuerySpec) []entity.Feature
+	GetAllWithQuery(ctx context.Context, spec model.GetAllWithQuerySpec) ([]entity.Feature, error)
 }
 
 func NewFeatureUsecase(repo port.IFeatureRepository) IFeatureUsecase {
@@ -22,7 +23,11 @@ func NewFeatureUsecase(repo port.IFeatureRepository) IFeatureUsecase {
 	}
 }
 
-func (a *FeatureUsecase) GetAllWithQuery(ctx context.Context, spec model.GetAllWithQuerySpec) []entity.Feature {
-	response := a.Repo.GetAllWithQuery(ctx, spec)
-	return response
+func (a *FeatureUsecase) GetAllWithQuery(ctx context.Context, spec model.GetAllWithQuerySpec) ([]entity.Feature, error) {
+	response, err := a.Repo.GetAllWithQuery(ctx, spec)
+	if err != nil {
+		fmt.Println("Failed GetAllWithQuery:", err)
+		return []entity.Feature{}, err
+	}
+	return response, nil
 }

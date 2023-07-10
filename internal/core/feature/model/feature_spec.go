@@ -3,8 +3,8 @@ package model
 import "go.mongodb.org/mongo-driver/bson"
 
 type GetAllWithQuerySpec struct {
-	Name      *string
-	IsEnabled *bool
+	Name      *string `query:"name"`
+	IsEnabled *bool   `query:"is_enabled"`
 }
 
 func (g *GetAllWithQuerySpec) ToBsonM() bson.M {

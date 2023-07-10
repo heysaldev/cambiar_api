@@ -36,9 +36,10 @@ func Test_GetAllWithQuery(t *testing.T) {
 		resultMock := []entity.Feature{}
 		resultMock = append(resultMock, entity.Feature{Name: "flag-1"})
 		resultMock = append(resultMock, entity.Feature{Name: "flag-2"})
-		repository.EXPECT().GetAllWithQuery(gomock.Any(), gomock.Any()).Return(resultMock)
+		repository.EXPECT().GetAllWithQuery(gomock.Any(), gomock.Any()).Return(resultMock, nil)
 		// Expected
-		response := service.GetAllWithQuery(context.Background(), spec)
+		response, err := service.GetAllWithQuery(context.Background(), spec)
 		assert.Equal(t, resultMock, response)
+		assert.Nil(t, err)
 	})
 }

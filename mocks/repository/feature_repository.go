@@ -37,11 +37,12 @@ func (m *MockIFeatureRepository) EXPECT() *MockIFeatureRepositoryMockRecorder {
 }
 
 // GetAllWithQuery mocks base method.
-func (m *MockIFeatureRepository) GetAllWithQuery(ctx context.Context, spec model.GetAllWithQuerySpec) []entity.Feature {
+func (m *MockIFeatureRepository) GetAllWithQuery(ctx context.Context, spec model.GetAllWithQuerySpec) ([]entity.Feature, error) {
         m.ctrl.T.Helper()
         ret := m.ctrl.Call(m, "GetAllWithQuery", ctx, spec)
         ret0, _ := ret[0].([]entity.Feature)
-        return ret0
+        ret1, _ := ret[1].(error)
+        return ret0, ret1
 }
 
 // GetAllWithQuery indicates an expected call of GetAllWithQuery.

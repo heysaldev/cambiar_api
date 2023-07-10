@@ -8,5 +8,5 @@ import (
 )
 
 type IFeatureRepository interface {
-	GetAllWithQuery(ctx context.Context, spec model.GetAllWithQuerySpec) []entity.Feature
+	GetAllWithQuery(ctx context.Context, spec model.GetAllWithQuerySpec) ([]entity.Feature, error)
 }

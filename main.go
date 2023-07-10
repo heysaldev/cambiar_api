@@ -2,14 +2,15 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 
-	"github.com/cambiar_api/internal/core/feature/model"
 	"github.com/cambiar_api/internal/core/feature/repository/adapter"
 	"github.com/cambiar_api/internal/core/feature/usecase"
+	"github.com/cambiar_api/internal/handler/feature"
+	"github.com/cambiar_api/internal/handler/feature/controller"
 	"github.com/joho/godotenv"
+	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -35,11 +36,28 @@ func main() {
 		}
 	}()
 
-	ctx := context.Background()
 	db := client.Database(database)
-	repository := adapter.NewMongo(db)
+	repository := adapter.NewFeatureMongo(db)
 	service := usecase.NewFeatureUsecase(repository)
-	flag := "feature-flag-1"
-	test := service.GetAllWithQuery(ctx, model.GetAllWithQuerySpec{Name: &flag})
-	fmt.Printf("%+v\n", test)
+	ctrl := controller.NewFeatureController(service)
+
+	e := echo.New()
+
+	// Initialize the router
+	router := feature.NewRouter(ctrl)
+	router.RegisterRoutes(e)
+
+	// Register the application instance with the Echo context
+	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			c.Set("app", ctrl)
+			return next(c)
+		}
+	})
+
+	// Start the server
+	err = e.Start(":8080")
+	if err != nil {
+		log.Fatal(err)
+	}
 }
