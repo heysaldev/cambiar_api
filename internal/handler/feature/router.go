@@ -1,4 +1,4 @@
-package feature
+package handlerfeature
 
 import (
 	"github.com/cambiar_api/internal/handler/feature/controller"

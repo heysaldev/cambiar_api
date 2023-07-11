@@ -11,7 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type Mongo struct {
+type FeatureMongo struct {
 	Col database.DB
 }
 
@@ -19,12 +19,12 @@ var EMPTY_DATA []entity.Feature = []entity.Feature{}
 
 func NewFeatureMongo(db *mongo.Database) port.IFeatureRepository {
 
-	return &Mongo{
+	return &FeatureMongo{
 		Col: database.NewMongo(db.Collection("features")),
 	}
 }
 
-func (m *Mongo) GetAllWithQuery(ctx context.Context, spec model.GetAllWithQuerySpec) ([]entity.Feature, error) {
+func (m *FeatureMongo) GetAllWithQuery(ctx context.Context, spec model.GetAllWithQuerySpec) ([]entity.Feature, error) {
 	filter := spec.ToBsonM()
 	results, err := m.Col.Find(context.TODO(), filter)
 	if err != nil {
